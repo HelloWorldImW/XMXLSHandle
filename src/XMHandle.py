@@ -35,7 +35,12 @@ class ExlHandle(object):
 
     #查找某一目录下的xls文件
     def findExlFile(self,filePath = './'):
-        exlList = os.listdir(filePath)
+        exlList = None
+        try:
+            exlList = os.listdir(filePath)
+        except:
+            print '<error> -> 路径无效'
+            return
         hasExl = False
         exlDic = {}
         for index,exl in enumerate(exlList):
@@ -76,14 +81,14 @@ class ExlHandle(object):
                 ios = exls['ios']
                 error = 'android'
                 android = exls['android']
-                error = 'java'
-                java = exls['java']
-                error = 'yunwei'
-                yunwei = exls['yunwei']
-                error = 'test'
-                test = exls['test']
+                # error = 'java'
+                # java = exls['java']
+                # error = 'yunwei'
+                # yunwei = exls['yunwei']
+                # error = 'test'
+                # test = exls['test']
             except:
-                hasError = False
+                hasError = True
                 print 'warning -> 找不到"%s"的周报文件'%error
         else:
             print '<error>method:handleExl(self,exls)\t参数"exls"为None'
@@ -93,17 +98,22 @@ class ExlHandle(object):
 
         if ios:
             iosModel = XMModel.iOSExlModel(ios)
-            print iosModel.cellValue(1,1)
         if android:
-            androidModel = XMModel.iOSExlModel(android)
-            print androidModel.cellValue(1, 1)
+            androidModel = XMModel.AndroidExlModel(android)
         if java:
-            pass
+            javaModel = XMModel.JavaExlModel(java)
         if yunwei:
-            pass
+            yunweiModel = XMModel.YWExlModel(yunwei)
         if test:
-            pass
+            testModel = XMModel.TestExlModel(test)
+
 
 if __name__ == '__main__':
+    path = './'
+    # b = raw_input('周报是否在当前目录下?(y/n)')
+    # if b == 'y':
+    #     pass
+    # else:
+    #     path = raw_input('请输入周报路径:')
     a = ExlHandle()
-    a.findExlFile()
+    a.findExlFile(path)

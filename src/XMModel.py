@@ -7,15 +7,15 @@ __author__ = 'DarrenW'
 
 import xlrd
 
-class baseExlModel(object):
+class BaseExlModel(object):
 
     def __init__(self,fileName):
         self.fileName = fileName
-        self.xlsData = self.loadXls(fileName)
+        self.xlsData = self.__loadXls(fileName)
         self.loadTable()
 
     #读取excel表 并返回excel表的python对象
-    def loadXls(self,fileName):
+    def __loadXls(self,fileName):
         xlsData = xlrd.open_workbook(fileName)
         return xlsData
 
@@ -37,35 +37,61 @@ class baseExlModel(object):
 
 
 # iOS周报数据model
-class iOSExlModel(baseExlModel):
-    pass
+class iOSExlModel(BaseExlModel):
+
+    def __init__(self, fileName):
+        super(iOSExlModel, self).__init__(fileName)
+        self.hahaha()
+
+    def hahaha(self):
+        aa = self.rowValues(0)
+        for index, ss in enumerate(aa):
+            print index,ss
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# android周报数据model
+class AndroidExlModel(BaseExlModel):
+    def __init__(self, fileName):
+        super(AndroidExlModel, self).__init__(fileName)
 
 # Java周报数据model
-class JavaExlModel(baseExlModel):
-    pass
-
-
-
-
-
+class JavaExlModel(BaseExlModel):
+    def __init__(self, fileName):
+        super(JavaExlModel, self).__init__(fileName)
 
 
 # 测试周报数据model
-class TestExlModel(baseExlModel):
-    pass
-
-
-
-
-
-
+class TestExlModel(BaseExlModel):
+    def __init__(self, fileName):
+        super(TestExlModel, self).__init__(fileName)
 
 
 # 运维周报数据model
-class YWExlModel(baseExlModel):
-    pass
+class YWExlModel(BaseExlModel):
+    def __init__(self, fileName):
+        super(YWExlModel, self).__init__(fileName)
