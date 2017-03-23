@@ -12,6 +12,7 @@ class baseExlModel(object):
     def __init__(self,fileName):
         self.fileName = fileName
         self.xlsData = self.loadXls(fileName)
+        self.loadTable()
 
     #读取excel表 并返回excel表的python对象
     def loadXls(self,fileName):
