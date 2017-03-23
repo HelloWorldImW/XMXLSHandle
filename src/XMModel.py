@@ -44,7 +44,7 @@ class iOSExlModel(BaseExlModel):
         self.hahaha()
 
     def hahaha(self):
-        aa = self.rowValues(0)
+        aa = self.colValues(1)
         for index, ss in enumerate(aa):
             print index,ss
 

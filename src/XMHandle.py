@@ -7,7 +7,7 @@ __author__ = 'DarrenW'
 
 import XMModel,os
 
-class ExlHandle(object):
+class ExlReadHandle(object):
 
     def __init__(self):
         self.__hasiOS = False
@@ -107,6 +107,8 @@ class ExlHandle(object):
         if test:
             testModel = XMModel.TestExlModel(test)
 
+class ExlWriteHandle(object):
+    pass
 
 if __name__ == '__main__':
     path = './'
@@ -115,5 +117,5 @@ if __name__ == '__main__':
     #     pass
     # else:
     #     path = raw_input('请输入周报路径:')
-    a = ExlHandle()
+    a = ExlReadHandle()
     a.findExlFile(path)
