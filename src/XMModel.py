@@ -35,6 +35,7 @@ class baseExlModel(object):
         return self.table.cell_value(row,col)
 
 
+# iOS周报数据model
 class iOSExlModel(baseExlModel):
     pass
 
@@ -43,9 +44,8 @@ class iOSExlModel(baseExlModel):
 
 
 
-
+# Java周报数据model
 class JavaExlModel(baseExlModel):
-
     pass
 
 
@@ -54,7 +54,7 @@ class JavaExlModel(baseExlModel):
 
 
 
-
+# 测试周报数据model
 class TestExlModel(baseExlModel):
     pass
 
@@ -65,6 +65,6 @@ class TestExlModel(baseExlModel):
 
 
 
-
+# 运维周报数据model
 class YWExlModel(baseExlModel):
     pass
