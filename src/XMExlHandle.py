@@ -5,7 +5,7 @@
 
 __author__ = 'DarrenW'
 
-import XMExlModel,os
+import XMExlModel,os,xlwt
 
 class ExlReadHandle(object):
 
@@ -64,7 +64,7 @@ class ExlReadHandle(object):
                         exlDic['test'] = exl
                 hasExl = True
         if hasExl:
-            self.handleExl(exlDic)
+            return self.handleExl(exlDic)
 
     # 处理exl表
     def handleExl(self,exls = None):
@@ -96,26 +96,57 @@ class ExlReadHandle(object):
         if hasError:
             return
 
-        # if ios:
-        #     iosModel = XMExlModel.XMExlModel(ios)
+        models = []
+
+        if ios:
+            iosModel = XMExlModel.XMExlModel(ios)
+            models.append(iosModel)
         if android:
             androidModel = XMExlModel.XMExlModel(android)
+            models.append(androidModel)
         if java:
             javaModel = XMExlModel.XMExlModel(java)
+            models.append(javaModel)
         if yunwei:
             yunweiModel = XMExlModel.XMExlModel(yunwei)
+            models.append(yunweiModel)
         if test:
             testModel = XMExlModel.XMExlModel(test)
+            models.append(testModel)
+        return models
+
+    # def handleModel(self,model):
+    #     aa = model.contentModel.getWorkItems()
+    #     for index, ss in enumerate(aa):
+    #         if index == 0:
+    #             print ss
+    #             print '\n'
+    #             status = model.contentModel.getWorkItemCompleteStatus(ss)
+    #             for i, s in enumerate(status):
+    #                 print i, s
+    #             print '\n'
+    #             warning = model.contentModel.getWorkItemWarning(ss)
+    #             print warning
+    #             print '\n'
+    #             nextWorkPlan = model.contentModel.getWorkItemWorkPlan(ss)
+    #             print nextWorkPlan
+    #             print '\n'
+    #             charge = model.contentModel.getWorkItemCharge(ss)
+    #             print charge
+
 
 class ExlWriteHandle(object):
-    pass
 
-if __name__ == '__main__':
-    path = './'
-    # b = raw_input('周报是否在当前目录下?(y/n)')
-    # if b == 'y':
-    #     pass
-    # else:
-    #     path = raw_input('请输入周报路径:')
-    a = ExlReadHandle()
-    a.findExlFile(path)
+    def __init__(self, models):
+        self.workbook = xlwt.Workbook()
+        self.sheet = self.workbook.add_sheet(u"工作内容")
+        self.xlsName = '项目周报_招呼团队_戴子奇_0116-0120.xls'
+        self.writeModel(models)
+
+    def writeModel(self,models):
+        for index, model in enumerate(models):
+            print index,models
+        self.writeToExl()
+
+    def writeToExl(self):
+        self.workbook.save(self.xlsName)
