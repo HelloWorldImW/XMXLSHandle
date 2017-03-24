@@ -115,38 +115,44 @@ class ExlReadHandle(object):
             models.append(testModel)
         return models
 
-    # def handleModel(self,model):
-    #     aa = model.contentModel.getWorkItems()
-    #     for index, ss in enumerate(aa):
-    #         if index == 0:
-    #             print ss
-    #             print '\n'
-    #             status = model.contentModel.getWorkItemCompleteStatus(ss)
-    #             for i, s in enumerate(status):
-    #                 print i, s
-    #             print '\n'
-    #             warning = model.contentModel.getWorkItemWarning(ss)
-    #             print warning
-    #             print '\n'
-    #             nextWorkPlan = model.contentModel.getWorkItemWorkPlan(ss)
-    #             print nextWorkPlan
-    #             print '\n'
-    #             charge = model.contentModel.getWorkItemCharge(ss)
-    #             print charge
 
-
+# 将model写入exl表
 class ExlWriteHandle(object):
 
     def __init__(self, models):
         self.workbook = xlwt.Workbook()
         self.sheet = self.workbook.add_sheet(u"工作内容")
         self.xlsName = '项目周报_招呼团队_戴子奇_0116-0120.xls'
-        self.writeModel(models)
-
-    def writeModel(self,models):
         for index, model in enumerate(models):
-            print index,models
-        self.writeToExl()
+            self.__handleModel(model)
 
-    def writeToExl(self):
+        # self.__writeToExl()
+
+    #处理model
+    def __handleModel(self, model):
+        aa = model.contentModel.getWorkItems()
+        for index, ss in enumerate(aa):
+            if index == 0:
+                print ss
+                print '\n'
+                status = model.contentModel.getWorkItemCompleteStatus(ss)
+                for i, s in enumerate(status):
+                    print i, s
+                print '\n'
+                warning = model.contentModel.getWorkItemWarning(ss)
+                print warning
+                print '\n'
+                nextWorkPlan = model.contentModel.getWorkItemWorkPlan(ss)
+                print nextWorkPlan
+                print '\n'
+                charge = model.contentModel.getWorkItemCharge(ss)
+                print charge
+
+
+    # 写入某一单元格数据
+    def __writeCell(self,row, col, value):
+        self.sheet.write(0, 0, 'foobar')
+
+    # 生成一个exl表
+    def __writeToExl(self):
         self.workbook.save(self.xlsName)
