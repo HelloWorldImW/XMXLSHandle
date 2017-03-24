@@ -105,36 +105,26 @@ class XMExlModel(object):
     def __loadWorkItem(self):
         workItems = self.__colValues(0)
         completeArray = None
+        nextWorkPlan = None
+        tempItem = None
         for index, item in enumerate(workItems):
             if index != 0 :
                 if item != '':
                     completeArray = []
+                    if nextWorkPlan != None:
+                        self.contentModel.addNextWorkPlan(tempItem, nextWorkPlan)
+                    nextWorkPlan = ''
                     self.contentModel.addWorkItem(item)
                     completeArray.append(self.__loadCompleteStatus(index))
+                    nextWorkPlan += self.__loadNextWorkPlan(index)
                     self.contentModel.addCompleteStatus(item,completeArray)
                     self.contentModel.addWarning(item,self.__loadWarning(index))
-                    self.contentModel.addNextWorkPlan(item,self.loadNextWorkPlan(index))
+                    self.contentModel.addNextWorkPlan(item,nextWorkPlan)
                     self.contentModel.addCharge(item,self.__loadCharge(index))
+                    tempItem = item
                 else:
                     completeArray.append(self.__loadCompleteStatus(index))
-
-        aa = self.contentModel.getWorkItems()
-        for index, ss in enumerate(aa):
-            if index == 1:
-                print ss
-                status = self.contentModel.getWorkItemCompleteStatus(ss)
-                for i,s in enumerate(status):
-                    print i,s
-                print '\n'
-                warning = self.contentModel.getWorkItemWarning(ss)
-                print warning
-                print '\n'
-                nextWorkPlan = self.contentModel.getWorkItemWorkPlan(ss)
-                print nextWorkPlan
-                print '\n'
-                charge = self.contentModel.getWorkItemCharge(ss)
-                print charge
-
+                    nextWorkPlan += self.__loadNextWorkPlan(index)
 
     # 读取exl表中的完成情况
     def __loadCompleteStatus(self,index):
@@ -149,7 +139,7 @@ class XMExlModel(object):
         return warning
 
     # 读取exl表中的下周工作计划
-    def loadNextWorkPlan(self, index):
+    def __loadNextWorkPlan(self, index):
         workPlan = self.__cellValue(3, index)
         return workPlan
 

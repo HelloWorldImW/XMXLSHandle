@@ -96,10 +96,10 @@ class ExlReadHandle(object):
         if hasError:
             return
 
-        if ios:
-            iosModel = XMExlModel.XMExlModel(ios)
-        # if android:
-            # androidModel = XMExlModel.XMExlModel(android)
+        # if ios:
+        #     iosModel = XMExlModel.XMExlModel(ios)
+        if android:
+            androidModel = XMExlModel.XMExlModel(android)
         if java:
             javaModel = XMExlModel.XMExlModel(java)
         if yunwei:
