@@ -97,15 +97,15 @@ class ExlReadHandle(object):
             return
 
         if ios:
-            iosModel = XMExlModel.iOSExlModel(ios)
-        if android:
-            androidModel = XMExlModel.AndroidExlModel(android)
+            iosModel = XMExlModel.XMExlModel(ios)
+        # if android:
+            # androidModel = XMExlModel.XMExlModel(android)
         if java:
-            javaModel = XMExlModel.JavaExlModel(java)
+            javaModel = XMExlModel.XMExlModel(java)
         if yunwei:
-            yunweiModel = XMExlModel.YWExlModel(yunwei)
+            yunweiModel = XMExlModel.XMExlModel(yunwei)
         if test:
-            testModel = XMExlModel.TestExlModel(test)
+            testModel = XMExlModel.XMExlModel(test)
 
 class ExlWriteHandle(object):
     pass

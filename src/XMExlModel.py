@@ -25,34 +25,60 @@ class XMExlContents(object):
     def addWorkItem(self,item):
         self.workItems[item] = {}
 
+    # 获取所有的工作项
+    def getWorkItems(self):
+        if len(self.workItems):
+            return self.workItems.keys()
+
     # 给某一工作项添加完成情况
     def addCompleteStatus(self,item,status):
         if self.workItems[item]:
             self.workItems[item][self.completeStatus] = status
+
+    # 获取某一工作项的完成情况[]
+    def getWorkItemCompleteStatus(self, item):
+        if self.workItems[item]:
+            return self.workItems[item][self.completeStatus]
 
     # 给某一工作项添加负责人
     def addCharge(self,item,charge):
         if self.workItems[item]:
             self.workItems[item][self.charge] = charge
 
+    # 获取某一工作项的负责人
+    def getWorkItemCharge(self, item):
+        if self.workItems[item]:
+            return self.workItems[item][self.completeStatus]
+
     # 给某一工作项添加风险
     def addWarning(self,item,warning):
         if self.workItems[item]:
             self.workItems[item][self.hasWarning] = warning
+
+    # 获取某一工作项的风险
+    def getWorkItemWarning(self, item):
+        if self.workItems[item]:
+            return self.workItems[item][self.completeStatus]
 
     # 给某一工作项添加下周计划
     def addNextWorkPlan(self,item,plan):
         if self.workItems[item]:
             self.workItems[item][self.nextWorkPlan] = plan
 
+    #获取某一工作项的下周计划
+    def getWorkItemWorkPlan(self,item):
+        if self.workItems[item]:
+            return self.workItems[item][self.completeStatus]
 
 
-class BaseExlModel(object):
+class XMExlModel(object):
 
     def __init__(self,fileName):
         self.fileName = fileName
+        self.contentModel = XMExlContents()
         self.xlsData = self.__loadXls(fileName)
-        self.loadTable()
+        self.__loadTable()
+        self.__loadWorkItem()
 
     #读取excel表 并返回excel表的python对象
     def __loadXls(self,fileName):
@@ -60,80 +86,45 @@ class BaseExlModel(object):
         return xlsData
 
     #读取某一个sheet表
-    def loadTable(self,sheetIndex = 0):
+    def __loadTable(self,sheetIndex = 0):
         self.table = self.xlsData.sheet_by_index(sheetIndex)
 
     #获取sheet表的某一行,并返回
-    def rowValues(self,rowNumber = 0):
+    def __rowValues(self,rowNumber = 0):
         return self.table.row_values(rowNumber)
 
     #获取某一列的值,并返回
-    def colValues(self,colNumber = 0):
+    def __colValues(self,colNumber = 0):
         return self.table.col_values(colNumber)
 
     #获取具体某个单元格的值 col:列  row:行
-    def cellValue(self, col, row):
+    def __cellValue(self, col, row):
         return self.table.cell_value(row,col)
 
+    # 读取exl表中的工作项
+    def __loadWorkItem(self):
+        workItems = self.__colValues(0)
+        itemT = None
+        for index, item in enumerate(workItems):
+            if index != 0 :
+                if item != '':
+                    print item
+                    itemT = item
+                    self.contentModel.addWorkItem(item)
 
-# iOS周报数据model
-class iOSExlModel(BaseExlModel):
+    # 读取exl表中的完成情况
+    def __loadCompleteStatus(self):
+        completeStatus = self.__colValues(0)
+        pass
 
+    # 读取exl表中的风险
+    def __loadWarning(self):
+        pass
 
+    # 读取exl表中的负责人
+    def __loadCharge(self):
+        pass
 
-    def __init__(self, fileName):
-        super(iOSExlModel, self).__init__(fileName)
-        self.hahaha()
-
-    def hahaha(self):
-        aa = self.colValues(1)
-        for index, ss in enumerate(aa):
-            print index,ss
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# android周报数据model
-class AndroidExlModel(BaseExlModel):
-    def __init__(self, fileName):
-        super(AndroidExlModel, self).__init__(fileName)
-
-# Java周报数据model
-class JavaExlModel(BaseExlModel):
-    def __init__(self, fileName):
-        super(JavaExlModel, self).__init__(fileName)
-
-
-# 测试周报数据model
-class TestExlModel(BaseExlModel):
-    def __init__(self, fileName):
-        super(TestExlModel, self).__init__(fileName)
-
-
-# 运维周报数据model
-class YWExlModel(BaseExlModel):
-    def __init__(self, fileName):
-        super(YWExlModel, self).__init__(fileName)
+    # 读取exl表中的下周工作计划
+    def loadNextWorkPlan(self):
+        pass
