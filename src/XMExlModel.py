@@ -7,6 +7,46 @@ __author__ = 'DarrenW'
 
 import xlrd
 
+#exl表内容model
+class XMExlContents(object):
+    def __init__(self):
+        # 工作项
+        self.workItems = {}
+        # 是否遇到问题或风险
+        self.hasWarning = 'warning'
+        # 下周工作计划
+        self.nextWorkPlan = 'nextWorkPlan'
+        # 本周完成情况
+        self.completeStatus = 'completeStatus'
+        # 负责人
+        self.charge = 'charge'
+
+    # 添加工作项
+    def addWorkItem(self,item):
+        self.workItems[item] = {}
+
+    # 给某一工作项添加完成情况
+    def addCompleteStatus(self,item,status):
+        if self.workItems[item]:
+            self.workItems[item][self.completeStatus] = status
+
+    # 给某一工作项添加负责人
+    def addCharge(self,item,charge):
+        if self.workItems[item]:
+            self.workItems[item][self.charge] = charge
+
+    # 给某一工作项添加风险
+    def addWarning(self,item,warning):
+        if self.workItems[item]:
+            self.workItems[item][self.hasWarning] = warning
+
+    # 给某一工作项添加下周计划
+    def addNextWorkPlan(self,item,plan):
+        if self.workItems[item]:
+            self.workItems[item][self.nextWorkPlan] = plan
+
+
+
 class BaseExlModel(object):
 
     def __init__(self,fileName):
