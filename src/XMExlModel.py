@@ -112,16 +112,28 @@ class XMExlModel(object):
                     self.contentModel.addWorkItem(item)
                     completeArray.append(self.__loadCompleteStatus(index))
                     self.contentModel.addCompleteStatus(item,completeArray)
+                    self.contentModel.addWarning(item,self.__loadWarning(index))
+                    self.contentModel.addNextWorkPlan(item,self.loadNextWorkPlan(index))
+                    self.contentModel.addCharge(item,self.__loadCharge(index))
                 else:
                     completeArray.append(self.__loadCompleteStatus(index))
 
         aa = self.contentModel.getWorkItems()
         for index, ss in enumerate(aa):
-            if index == 0:
+            if index == 1:
                 print ss
-                s = self.contentModel.getWorkItemCompleteStatus(ss)
-                for i,s in enumerate(s):
+                status = self.contentModel.getWorkItemCompleteStatus(ss)
+                for i,s in enumerate(status):
                     print i,s
+                print '\n'
+                warning = self.contentModel.getWorkItemWarning(ss)
+                print warning
+                print '\n'
+                nextWorkPlan = self.contentModel.getWorkItemWorkPlan(ss)
+                print nextWorkPlan
+                print '\n'
+                charge = self.contentModel.getWorkItemCharge(ss)
+                print charge
 
 
     # 读取exl表中的完成情况
@@ -130,13 +142,19 @@ class XMExlModel(object):
         return completeStatu
 
     # 读取exl表中的风险
-    def __loadWarning(self):
-        pass
-
-    # 读取exl表中的负责人
-    def __loadCharge(self):
-        pass
+    def __loadWarning(self,index):
+        warning = self.__cellValue(2, index)
+        if warning == '':
+            warning = '否'
+        return warning
 
     # 读取exl表中的下周工作计划
-    def loadNextWorkPlan(self):
-        pass
+    def loadNextWorkPlan(self, index):
+        workPlan = self.__cellValue(3, index)
+        return workPlan
+
+    # 读取exl表中的负责人
+    def __loadCharge(self,index):
+        charge = self.__cellValue(4, index)
+        return charge
+
