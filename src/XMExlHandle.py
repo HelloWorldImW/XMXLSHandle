@@ -5,7 +5,7 @@
 
 __author__ = 'DarrenW'
 
-import XMModel,os
+import XMExlModel,os
 
 class ExlReadHandle(object):
 
@@ -97,15 +97,15 @@ class ExlReadHandle(object):
             return
 
         if ios:
-            iosModel = XMModel.iOSExlModel(ios)
+            iosModel = XMExlModel.iOSExlModel(ios)
         if android:
-            androidModel = XMModel.AndroidExlModel(android)
+            androidModel = XMExlModel.AndroidExlModel(android)
         if java:
-            javaModel = XMModel.JavaExlModel(java)
+            javaModel = XMExlModel.JavaExlModel(java)
         if yunwei:
-            yunweiModel = XMModel.YWExlModel(yunwei)
+            yunweiModel = XMExlModel.YWExlModel(yunwei)
         if test:
-            testModel = XMModel.TestExlModel(test)
+            testModel = XMExlModel.TestExlModel(test)
 
 class ExlWriteHandle(object):
     pass

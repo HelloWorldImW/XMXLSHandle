@@ -39,6 +39,8 @@ class BaseExlModel(object):
 # iOS周报数据model
 class iOSExlModel(BaseExlModel):
 
+
+
     def __init__(self, fileName):
         super(iOSExlModel, self).__init__(fileName)
         self.hahaha()
