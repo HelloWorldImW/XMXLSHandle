@@ -32,43 +32,43 @@ class XMExlContents(object):
 
     # 给某一工作项添加完成情况
     def addCompleteStatus(self,item,status):
-        if self.workItems[item]:
+        if self.workItems[item] != None:
             self.workItems[item][self.completeStatus] = status
 
     # 获取某一工作项的完成情况[]
     def getWorkItemCompleteStatus(self, item):
-        if self.workItems[item]:
+        if self.workItems[item] != None:
             return self.workItems[item][self.completeStatus]
 
     # 给某一工作项添加负责人
     def addCharge(self,item,charge):
-        if self.workItems[item]:
+        if self.workItems[item] != None:
             self.workItems[item][self.charge] = charge
 
     # 获取某一工作项的负责人
     def getWorkItemCharge(self, item):
-        if self.workItems[item]:
-            return self.workItems[item][self.completeStatus]
+        if self.workItems[item] != None:
+            return self.workItems[item][self.charge]
 
     # 给某一工作项添加风险
     def addWarning(self,item,warning):
-        if self.workItems[item]:
+        if self.workItems[item] != None:
             self.workItems[item][self.hasWarning] = warning
 
     # 获取某一工作项的风险
     def getWorkItemWarning(self, item):
-        if self.workItems[item]:
-            return self.workItems[item][self.completeStatus]
+        if self.workItems[item] != None:
+            return self.workItems[item][self.hasWarning]
 
     # 给某一工作项添加下周计划
     def addNextWorkPlan(self,item,plan):
-        if self.workItems[item]:
+        if self.workItems[item] != None:
             self.workItems[item][self.nextWorkPlan] = plan
 
     #获取某一工作项的下周计划
     def getWorkItemWorkPlan(self,item):
-        if self.workItems[item]:
-            return self.workItems[item][self.completeStatus]
+        if self.workItems[item] != None:
+            return self.workItems[item][self.nextWorkPlan]
 
 
 class XMExlModel(object):
@@ -104,18 +104,30 @@ class XMExlModel(object):
     # 读取exl表中的工作项
     def __loadWorkItem(self):
         workItems = self.__colValues(0)
-        itemT = None
+        completeArray = None
         for index, item in enumerate(workItems):
             if index != 0 :
                 if item != '':
-                    print item
-                    itemT = item
+                    completeArray = []
                     self.contentModel.addWorkItem(item)
+                    completeArray.append(self.__loadCompleteStatus(index))
+                    self.contentModel.addCompleteStatus(item,completeArray)
+                else:
+                    completeArray.append(self.__loadCompleteStatus(index))
+
+        aa = self.contentModel.getWorkItems()
+        for index, ss in enumerate(aa):
+            if index == 0:
+                print ss
+                s = self.contentModel.getWorkItemCompleteStatus(ss)
+                for i,s in enumerate(s):
+                    print i,s
+
 
     # 读取exl表中的完成情况
-    def __loadCompleteStatus(self):
-        completeStatus = self.__colValues(0)
-        pass
+    def __loadCompleteStatus(self,index):
+        completeStatu = self.__cellValue(1,index)
+        return completeStatu
 
     # 读取exl表中的风险
     def __loadWarning(self):
