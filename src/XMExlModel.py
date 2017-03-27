@@ -30,6 +30,19 @@ class XMExlContents(object):
         if len(self.workItems):
             return self.workItems.keys()
 
+    def addItemLength(self, item, length):
+        if self.workItems[item] != None:
+            self.workItems[item]['itemLength'] = length
+
+    def getItemLength(self, item):
+        if self.workItems[item] != None:
+            length = None
+            try:
+                length = self.workItems[item]['itemLength']
+            except:
+                length = 0
+            return length
+
     # 给某一工作项添加完成情况
     def addCompleteStatus(self,item,status):
         if self.workItems[item] != None:
@@ -110,12 +123,16 @@ class XMExlModel(object):
         completeArray = None
         nextWorkPlan = None
         tempItem = None
+        length = 0
         for index, item in enumerate(workItems):
             if index != 0 :
                 if item != '':
                     completeArray = []
                     if nextWorkPlan != None:
                         self.contentModel.addNextWorkPlan(tempItem, nextWorkPlan)
+                    if length != 0:
+                        self.contentModel.addItemLength(tempItem,length)
+                        length = 0
                     nextWorkPlan = ''
                     self.contentModel.addWorkItem(item)
                     completeArray.append(self.__loadCompleteStatus(index))
@@ -128,6 +145,7 @@ class XMExlModel(object):
                 else:
                     completeArray.append(self.__loadCompleteStatus(index))
                     nextWorkPlan += self.__loadNextWorkPlan(index)
+                    length += 1
 
     # 读取exl表中的完成情况
     def __loadCompleteStatus(self,index):

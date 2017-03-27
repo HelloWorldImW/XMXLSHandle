@@ -201,9 +201,11 @@ class ExlWriteHandle(object):
             return
         # 工作项
         elif col == 2:
+            length = 0
             for index, item in enumerate(items):
-                newRow = index + row
+                newRow = index + row + length
                 self.__writeCell(newRow, col, item)
+                length = model.contentModel.getItemLength(item)
         # 本周完成情况
         elif col == 3:
             row1 = row
@@ -216,24 +218,28 @@ class ExlWriteHandle(object):
 
         # 是否遇到问题或风险
         elif col == 4:
+            length = 0
             for index, item in enumerate(items):
                 warning = model.contentModel.getWorkItemWarning(item)
-                newRow = index + row
+                newRow = index + row + length
                 self.__writeCell(newRow, col, warning)
+                length = model.contentModel.getItemLength(item)
         # 下周工作计划
         elif col == 5:
-            pass
+            length = 0
             for index, item in enumerate(items):
                 nextWorkPlan = model.contentModel.getWorkItemWorkPlan(item)
-                newRow = index + row
+                newRow = index + row + length
                 self.__writeCell(newRow, col, nextWorkPlan)
+                length = model.contentModel.getItemLength(item)
         # 负责人
         elif col == 6:
-            pass
+            length = 0
             for index, item in enumerate(items):
                 charge = model.contentModel.getWorkItemCharge(item)
-                newRow = index + row
+                newRow = index + row + length
                 self.__writeCell(newRow, col, charge)
+                length = model.contentModel.getItemLength(item)
 
     # 写入某一单元格数据
     def __writeCell(self,row, col, value):
