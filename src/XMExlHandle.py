@@ -101,18 +101,23 @@ class ExlReadHandle(object):
 
         if ios:
             iosModel = XMExlModel.XMExlModel(ios)
+            iosModel.teamTitle = u'iOS组'
             models.append(iosModel)
         if android:
             androidModel = XMExlModel.XMExlModel(android)
+            androidModel.teamTitle = u'Android组'
             models.append(androidModel)
         if java:
             javaModel = XMExlModel.XMExlModel(java)
+            javaModel.teamTitle = u'Java组'
             models.append(javaModel)
         if yunwei:
             yunweiModel = XMExlModel.XMExlModel(yunwei)
+            yunweiModel.teamTitle = u'运维组'
             models.append(yunweiModel)
         if test:
             testModel = XMExlModel.XMExlModel(test)
+            testModel.teamTitle = u'测试组'
             models.append(testModel)
         return models
 
@@ -168,32 +173,67 @@ class ExlWriteHandle(object):
     def __init__(self, models):
         self.workbook = xlwt.Workbook()
         self.sheet = self.workbook.add_sheet(u"工作内容")
-        self.xlsName = '项目周报_招呼团队_戴子奇_%s.xls'%ExlReadHandle.noteDate
-        # for index, model in enumerate(models):
-        #     self.__handleModel(model)
-        # self.__writeCell(1,2,'sda')
+        self.xlsName = '项目周报_招乎团队_戴子奇_%s.xls'%ExlReadHandle.noteDate
+        titles = [u'工作类型',u'分类',u'工作项',u'本周完成情况',u'是否遇到问题或风险',u'下周工作计划',u'负责人']
+        lastIndex = 0
+        # 工作类型
+        self.__writeCell(1, 0, u'杭州招乎团队')
+        # 写入各栏标题
+        for index, title in enumerate(titles):
+            self.__writeCell(0, index, title)
+        # 填充内容
+        for i, model in enumerate(models):
+            row = lastIndex + 1
+            self.__writeCell(row, 1, model.teamTitle)
+            for index, title in enumerate(titles):
+                self.__handleModel(row,index,model)
+            lastIndex += model.rows
+
         self.__writeToExl()
 
     #处理model
-    def __handleModel(self, model):
-        aa = model.contentModel.getWorkItems()
-        for index, ss in enumerate(aa):
-            print ss
-            print '\n'
-            status = model.contentModel.getWorkItemCompleteStatus(ss)
-            for i, s in enumerate(status):
-                print i, s
-            print '\n'
-            warning = model.contentModel.getWorkItemWarning(ss)
-            print warning
-            print '\n'
-            nextWorkPlan = model.contentModel.getWorkItemWorkPlan(ss)
-            print nextWorkPlan
-            print '\n'
-            charge = model.contentModel.getWorkItemCharge(ss)
-            print charge
-            print '\n'
+    def __handleModel(self, row, col, model):
+        items = model.contentModel.getWorkItems()
+        if col == 0:
+            return
+        # 分类
+        if col == 1:
+            return
+        # 工作项
+        elif col == 2:
+            for index, item in enumerate(items):
+                newRow = index + row
+                self.__writeCell(newRow, col, item)
+        # 本周完成情况
+        elif col == 3:
+            row1 = row
+            for index, item in enumerate(items):
+                status = model.contentModel.getWorkItemCompleteStatus(item)
+                for i, s in enumerate(status):
+                    newRow = row1
+                    self.__writeCell(newRow, col, s)
+                    row1 += 1
 
+        # 是否遇到问题或风险
+        elif col == 4:
+            for index, item in enumerate(items):
+                warning = model.contentModel.getWorkItemWarning(item)
+                newRow = index + row
+                self.__writeCell(newRow, col, warning)
+        # 下周工作计划
+        elif col == 5:
+            pass
+            for index, item in enumerate(items):
+                nextWorkPlan = model.contentModel.getWorkItemWorkPlan(item)
+                newRow = index + row
+                self.__writeCell(newRow, col, nextWorkPlan)
+        # 负责人
+        elif col == 6:
+            pass
+            for index, item in enumerate(items):
+                charge = model.contentModel.getWorkItemCharge(item)
+                newRow = index + row
+                self.__writeCell(newRow, col, charge)
 
     # 写入某一单元格数据
     def __writeCell(self,row, col, value):

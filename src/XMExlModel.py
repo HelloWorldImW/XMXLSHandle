@@ -77,6 +77,8 @@ class XMExlModel(object):
         self.fileName = fileName
         self.contentModel = XMExlContents()
         self.xlsData = self.__loadXls(fileName)
+        self.rows = 0
+        self.teamTitle = ''
         self.__loadTable()
         self.__loadWorkItem()
 
@@ -104,10 +106,9 @@ class XMExlModel(object):
     # 读取exl表中的工作项
     def __loadWorkItem(self):
         workItems = self.__colValues(0)
+        self.rows = len(workItems)-1
         completeArray = None
         nextWorkPlan = None
-
-
         tempItem = None
         for index, item in enumerate(workItems):
             if index != 0 :
@@ -137,7 +138,7 @@ class XMExlModel(object):
     def __loadWarning(self,index):
         warning = self.__cellValue(2, index)
         if warning == '':
-            warning = '否'
+            warning = u'否'
         return warning
 
     # 读取exl表中的下周工作计划
