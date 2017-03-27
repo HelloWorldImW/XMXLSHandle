@@ -193,7 +193,7 @@ class ExlWriteHandle(object):
 
     #处理model
     def __handleModel(self, row, col, model):
-        items = model.contentModel.getWorkItems()
+        items = model.workItems
         if col == 0:
             return
         # 分类

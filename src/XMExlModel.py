@@ -87,6 +87,7 @@ class XMExlContents(object):
 class XMExlModel(object):
 
     def __init__(self,fileName):
+        self.workItems = []
         self.fileName = fileName
         self.contentModel = XMExlContents()
         self.xlsData = self.__loadXls(fileName)
@@ -134,6 +135,7 @@ class XMExlModel(object):
                         self.contentModel.addItemLength(tempItem,length)
                         length = 0
                     nextWorkPlan = ''
+                    self.workItems.append(item)
                     self.contentModel.addWorkItem(item)
                     completeArray.append(self.__loadCompleteStatus(index))
                     nextWorkPlan += self.__loadNextWorkPlan(index)
