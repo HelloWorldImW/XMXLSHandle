@@ -82,12 +82,12 @@ class ExlReadHandle(object):
                 ios = exls['ios']
                 error = 'android'
                 android = exls['android']
-                # error = 'java'
-                # java = exls['java']
-                # error = 'yunwei'
-                # yunwei = exls['yunwei']
-                # error = 'test'
-                # test = exls['test']
+                error = 'java'
+                java = exls['java']
+                error = 'yunwei'
+                yunwei = exls['yunwei']
+                error = 'test'
+                test = exls['test']
             except:
                 hasError = True
                 print 'warning -> 找不到"%s"的周报文件'%error
