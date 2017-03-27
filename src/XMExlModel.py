@@ -106,6 +106,8 @@ class XMExlModel(object):
         workItems = self.__colValues(0)
         completeArray = None
         nextWorkPlan = None
+
+
         tempItem = None
         for index, item in enumerate(workItems):
             if index != 0 :
