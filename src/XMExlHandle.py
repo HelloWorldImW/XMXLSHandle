@@ -176,23 +176,36 @@ class ExlWriteHandle(object):
         self.xlsName = '项目周报_招乎团队_戴子奇_%s.xls'%ExlReadHandle.noteDate
         titles = [u'工作类型',u'分类',u'工作项',u'本周完成情况',u'是否遇到问题或风险',u'下周工作计划',u'负责人']
         lastIndex = 0
-        # 工作类型
-        self.__writeCell(1, 0, u'杭州招乎团队')
+        alignment = xlwt.Alignment()
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+        style = xlwt.XFStyle()
+        style.alignment = alignment
         # 写入各栏标题
         for index, title in enumerate(titles):
-            self.__writeCell(0, index, title)
+            if index == 0 or index == 1 or index == 2  or index == 6:
+                self.sheet.col(index).width = 3333
+            else:
+                self.sheet.col(index).width = 3333*2
+            self.sheet.write(0, index, title,style)
         # 填充内容
         for i, model in enumerate(models):
             row = lastIndex + 1
-            self.__writeCell(row, 1, model.teamTitle)
-            for index, title in enumerate(titles):
-                self.__handleModel(row,index,model)
+            self.sheet.write_merge(row,row+model.rows-1, 1, 1, model.teamTitle,style)
+            for col, title in enumerate(titles):
+                self.__handleModel(row,col,model)
             lastIndex += model.rows
-
+        # 工作类型
+        self.sheet.write_merge(1, lastIndex, 0, 0, u'杭州招乎团队',style)
         self.__writeToExl()
 
     #处理model
     def __handleModel(self, row, col, model):
+        alignment = xlwt.Alignment()
+        alignment.horz = xlwt.Alignment.HORZ_CENTER
+        alignment.vert = xlwt.Alignment.VERT_CENTER
+        style = xlwt.XFStyle()
+        style.alignment = alignment
         items = model.workItems
         if col == 0:
             return
@@ -203,9 +216,9 @@ class ExlWriteHandle(object):
         elif col == 2:
             length = 0
             for index, item in enumerate(items):
-                newRow = index + row + length
-                self.__writeCell(newRow, col, item)
-                length = model.contentModel.getItemLength(item)
+                newRow =  row + length
+                self.sheet.write_merge(newRow,newRow + model.contentModel.getItemLength(item) - 1, col, col, item,style)
+                length += model.contentModel.getItemLength(item)
         # 本周完成情况
         elif col == 3:
             row1 = row
@@ -213,7 +226,7 @@ class ExlWriteHandle(object):
                 status = model.contentModel.getWorkItemCompleteStatus(item)
                 for i, s in enumerate(status):
                     newRow = row1
-                    self.__writeCell(newRow, col, s)
+                    self.sheet.write(newRow, col, s)
                     row1 += 1
 
         # 是否遇到问题或风险
@@ -221,29 +234,25 @@ class ExlWriteHandle(object):
             length = 0
             for index, item in enumerate(items):
                 warning = model.contentModel.getWorkItemWarning(item)
-                newRow = index + row + length
-                self.__writeCell(newRow, col, warning)
-                length = model.contentModel.getItemLength(item)
+                newRow =  row + length
+                self.sheet.write_merge(newRow, newRow+model.contentModel.getItemLength(item)-1, col, col, warning,style)
+                length += model.contentModel.getItemLength(item)
         # 下周工作计划
         elif col == 5:
             length = 0
             for index, item in enumerate(items):
                 nextWorkPlan = model.contentModel.getWorkItemWorkPlan(item)
-                newRow = index + row + length
-                self.__writeCell(newRow, col, nextWorkPlan)
-                length = model.contentModel.getItemLength(item)
+                newRow = row + length
+                self.sheet.write_merge(newRow,newRow+model.contentModel.getItemLength(item)-1, col, col, nextWorkPlan,style)
+                length += model.contentModel.getItemLength(item)
         # 负责人
         elif col == 6:
             length = 0
             for index, item in enumerate(items):
                 charge = model.contentModel.getWorkItemCharge(item)
-                newRow = index + row + length
-                self.__writeCell(newRow, col, charge)
-                length = model.contentModel.getItemLength(item)
-
-    # 写入某一单元格数据
-    def __writeCell(self,row, col, value):
-        self.sheet.write(row,col,value)
+                newRow =  row + length
+                self.sheet.write_merge(newRow, newRow+model.contentModel.getItemLength(item)-1, col, col, charge,style)
+                length += model.contentModel.getItemLength(item)
 
     # 生成一个exl表
     def __writeToExl(self):
