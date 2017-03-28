@@ -13,11 +13,11 @@ def goFly(self):
 
 if __name__ == '__main__':
     path = './'
-    # b = raw_input('周报是否在当前目录下?(y/n)')
-    # if b == 'y':
-    #     pass
-    # else:
-    #     path = raw_input('请输入周报路径:')
+    b = raw_input('周报是否在当前目录下?(y/n)')
+    if b == 'y':
+        pass
+    else:
+        path = raw_input('请输入周报路径:')
     a = XMExlHandle.ExlReadHandle()
     m =  a.findExlFile(path)
 

@@ -252,9 +252,10 @@ class ExlWriteHandle(object):
             for index, item in enumerate(items):
                 charge = model.contentModel.getWorkItemCharge(item)
                 newRow =  row + length
-                self.sheet.write_merge(newRow, newRow+model.contentModel.getItemLength(item)-1, col, col, charge,style)
+                self.sheet.write_merge(newRow, newRow+model.contentModely.getItemLength(item)-1, col, col, charge,style)
                 length += model.contentModel.getItemLength(item)
 
     # 生成一个exl表
     def __writeToExl(self):
         self.workbook.save(self.xlsName)
+        print '合成成功!'
