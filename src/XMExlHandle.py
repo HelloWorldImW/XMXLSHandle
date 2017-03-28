@@ -217,8 +217,9 @@ class ExlWriteHandle(object):
             length = 0
             for index, item in enumerate(items):
                 newRow =  row + length
-                self.sheet.write_merge(newRow,newRow + model.contentModel.getItemLength(item) - 1, col, col, item,style)
-                length += model.contentModel.getItemLength(item)
+                modelLength = model.contentModel.getItemLength(item)
+                self.sheet.write_merge(newRow,newRow + modelLength - 1, col, col, item,style)
+                length += modelLength
         # 本周完成情况
         elif col == 3:
             row1 = row

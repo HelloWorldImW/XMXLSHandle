@@ -148,8 +148,7 @@ class XMExlModel(object):
                     completeArray.append(self.__loadCompleteStatus(index))
                     nextWorkPlan += self.__loadNextWorkPlan(index)
                     length += 1
-                    if self.contentModel.getItemLength(tempItem) == 1:
-                        self.contentModel.addItemLength(tempItem, length)
+                    self.contentModel.addItemLength(tempItem, length)
 
     # 读取exl表中的完成情况
     def __loadCompleteStatus(self,index):
