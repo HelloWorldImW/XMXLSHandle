@@ -1,15 +1,11 @@
 #! /usr/bin/env python
 # _*_ coding:utf-8 _*_
 
-'ExlModel数据处理'
+'启动文件'
 
 __author__ = 'DarrenW'
 
 import XMExlHandle
-
-def goFly(self):
-    pass
-
 
 if __name__ == '__main__':
     path = './'
